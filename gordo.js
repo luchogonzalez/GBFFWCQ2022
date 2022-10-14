@@ -2,9 +2,7 @@ const puppeteer = require('puppeteer-core');
 const express = require('express');
 const axios = require('axios');
 const app = express();
-/* const path = require('path');
-
-const matches = [101437163862, 101437163878, 101437163893, 101437163904];
+/* const matches = [101437163862, 101437163878, 101437163893, 101437163904];
 const matchNames = new Map([
     [101437163862, 'ARABIA'],
     [101437163878, 'MEXICO'],
