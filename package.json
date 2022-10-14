@@ -5,13 +5,20 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node gordo.js"
+    "start:arabia": "cross-env PORT=3000 MATCH=101437163862 node gordo.js",
+    "start:arabia2": "cross-env PORT=3001 MATCH=101437163862 node gordo.js",
+    "start:mex": "cross-env PORT=3002 MATCH=101437163878 node gordo.js",
+    "start:mex2": "cross-env PORT=3003 MATCH=101437163878 node gordo.js",
+    "start:pol": "cross-env PORT=3004 MATCH=101437163893 node gordo.js",
+    "start:pol2": "cross-env PORT=3005 MATCH=101437163893 node gordo.js",
+    "start:test": "cross-env PORT=3020 MATCH=101437163875 node gordo.js",
+    "start:test2": "cross-env PORT=3020 MATCH=101437163859 node gordo.js"
   },
   "author": "Lucho",
   "license": "ISC",
   "devDependencies": {
-    "axios": "^0.27.2",
     "express": "^4.18.1",
-    "puppeteer-core": "^18.2.1"
+    "puppeteer-core": "^18.2.1",
+    "cross-env": "7.0.3"
   }
 }
