@@ -5,7 +5,6 @@ const axios = require('axios');
 
 const PORT = process.env.PORT;
 const MATCH = process.env.MATCH;
-const chromeEndpoint = 'ws://127.0.0.1:9222/devtools/browser/4d729a52-2ea2-4f9f-88fa-d0478fb0b689';
 const matchNames = new Map([
     ['101437163862', 'ARABIA'],
     ['101437163878', 'MEXICO'],
@@ -41,7 +40,7 @@ checkAndAddTickets = async function (page) {
         const tickets = await page.$$("tr[id^='FIFAT_FWC22RI']");
         let index = 0;
         if(tickets.length === 0) {
-            await browserGoTo(page);m
+            await browserGoTo(page);
             continue;
         } 
         console.log('Hay ' + tickets.length + ' entradas');        
