@@ -1,9 +1,11 @@
 const puppeteer = require('puppeteer-core');
 const express = require('express');
 const app = express();
+const axios = require('axios');
+
 const PORT = process.env.PORT;
 const MATCH = process.env.MATCH;
-const chromeEndpoint = 'ws://127.0.0.1:9222/devtools/browser/679d5e5d-8835-4065-b697-96b3fb63e4a1';
+const chromeEndpoint = 'ws://127.0.0.1:9222/devtools/browser/4d729a52-2ea2-4f9f-88fa-d0478fb0b689';
 const matchNames = new Map([
     ['101437163862', 'ARABIA'],
     ['101437163878', 'MEXICO'],
@@ -19,49 +21,47 @@ process.on('unhandledRejection', (reason) => {
 
 app.listen(PORT, async () => {
     console.info(`Gordoboooot buscando entradas en el puerto ${PORT} para ${matchNames.get(MATCH)}`);
+    const browserConfig = await axios.get('http://127.0.0.1:9222/json/version');
     browser = await puppeteer.connect({
-        browserWSEndpoint: chromeEndpoint
+        browserWSEndpoint: browserConfig.data.webSocketDebuggerUrl
     });
-    await init(await browser.newPage());
+    page = await browser.newPage();
+    await page.setRequestInterception(true)
+    page.on('request', (request) => {
+        if (request.resourceType() === 'image') request.abort()
+        else request.continue()
+    });
+    await browserGoTo(page);
+    await checkAndAddTickets(page);
 });
 
-init = async function (page) {
-    await browserGoTo(page);
-    try {
-        const ticketsAvailable = await page.$eval('#no_ticket_on_sale', noTicketsSection => {
-            return getComputedStyle(noTicketsSection).getPropertyValue('display') !== 'block' && noTicketsSection.offsetHeight === 0;
-        });
-        if (ticketsAvailable) {
-            const tickets = await page.$$("tr[id^='FIFAT_FWC22RI']");
-            let index = 0;
-            for (const ticket of tickets) {
-                index++;
-                await ticket.click();
+checkAndAddTickets = async function (page) {
+    let inCart = false;
+    while (!inCart) {        
+        const tickets = await page.$$("tr[id^='FIFAT_FWC22RI']");
+        let index = 0;
+        if(tickets.length === 0) {
+            await browserGoTo(page);m
+            continue;
+        } 
+        console.log('Hay ' + tickets.length + ' entradas');        
+        for (const ticket of tickets) {
+            index++;
+            await ticket.click();
+            await page.click('#book');
+            await page.waitForNavigation();
+            // console.log('Intenté comprar ' + index);
+            if (await page.$('#buy_order')) {
+                inCart = true;
                 await page.click('#book');
-                await page.waitForNavigation();
-                console.log('Intenté comprar ' + index);
-                const [cartPage] = await browser.pages();
-                if (cartPage.url().includes('cart/reservation')) {
-                    console.log('Entradas en el carrito gordo!!!');
-                    await page.click('#book');
-                    let newPage = await browser.newPage();
-                    await newPage.goto('https://youtu.be/vyDjFVZgJoo?t=56');
-                    return;
-                } else if (await page.$('#buy_order')) {
-                    console.log('Entradas en el carrito gordo!!!');
-                    await page.click('#book');
-                    newPage = await browser.newPage();
-                    await newPage.goto('https://youtu.be/vyDjFVZgJoo?t=56');
-                    return;
-                } else if (tickets.length > 1) {
-                    await browserGoTo(page);
-                }
-            }
+                alertPage = await browser.newPage();
+                await alertPage.goto('https://youtu.be/vyDjFVZgJoo?t=56');
+                return;
+            } 
+            await browserGoTo(page);
         }
-    } catch (error) {
-        await init(page);
+        await browserGoTo(page);
     }
-    await init(page);
 }
 
 browserGoTo = async (page) => {

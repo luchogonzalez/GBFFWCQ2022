@@ -4,9 +4,12 @@
   "description": "Fifa QBot",
   "main": "index.js",
   "scripts": {
+    "start": "npm-run-all --parallel start:arabia start:arabia2 start:arabia3 start:arabia4",
     "test": "cross-env PORT=3020 MATCH=101437163875 node gordo.js",
     "start:arabia": "cross-env PORT=3000 MATCH=101437163862 node gordo.js",
     "start:arabia2": "cross-env PORT=3001 MATCH=101437163862 node gordo.js",
+    "start:arabia3": "cross-env PORT=3006 MATCH=101437163862 node gordo.js",
+    "start:arabia4": "cross-env PORT=3007 MATCH=101437163862 node gordo.js",
     "start:mex": "cross-env PORT=3002 MATCH=101437163878 node gordo.js",
     "start:mex2": "cross-env PORT=3003 MATCH=101437163878 node gordo.js",
     "start:pol": "cross-env PORT=3004 MATCH=101437163893 node gordo.js",
@@ -18,6 +21,8 @@
   "devDependencies": {
     "express": "^4.18.1",
     "puppeteer-core": "^18.2.1",
-    "cross-env": "7.0.3"
+    "cross-env": "7.0.3",
+    "axios": "^0.27.2",
+    "npm-run-all": "4.1.5"
   }
 }
