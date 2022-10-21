@@ -1,5 +1,12 @@
 # GBFFWCQ2022
-FIFA TM GORDOBOT will scrap over Fifa Resale Portal for some static matches and will try to add a random ticket to the cart when possible. After that it will alert you so you can complete the purchase
+FIFA TM GORDOBOT will scrap over Fifa Resale Portal for some static matches and will try to add a random ticket to the cart when possible. After that it will alert you so you can complete the purchase.
+
+## Flow Logic
+1. GORDOBOT opens Chrome Tabs with an already opened FIFA Resale Portal session
+2. While no tickets are available, retry.
+3. If a ticket is available, randomly try to add one of the available tickets to the cart.
+4. If an error occurs, retry with a different ticket
+5. If successful, voilà! Alert the user in a special way.
 
 ## Prerequisites
 1. Download Node.JS into your computer
@@ -17,9 +24,10 @@ FIFA TM GORDOBOT will scrap over Fifa Resale Portal for some static matches and 
 5. 6 chrome tabs will open and look for Argentina-Arabia. At this point you can let GORDOBOT do his job, but beware that FIFA will close your session and you will need to manually log in again and restart GORDOBOT
 
 ## Available matches
-[X] Argentina Arabia
-[X] Argentina Mexico
-[X] Argentina Poland
+- Argentina Arabia
+- Argentina Mexico
+- Argentina Poland
 
 ## Tips
 - You can check package.json file for available commands you can run from the cmd terminal. You can open multiple terminals and run commands in parallel to search for multiple matches at the same time
+- You can run "npm test" command for a demo with a High Availability match.
