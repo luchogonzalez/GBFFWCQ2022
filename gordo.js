@@ -10,7 +10,7 @@ const matchNames = new Map([
     ['101437163878', 'MEXICO'],
     ['101437163893', 'POLONIA'],
     ['101437163904', '8VOS'],
-    ['101437163875', 'TUNEZ-AUSTRALIA']
+    ['101437163873', 'TUNEZ-AUSTRALIA']
 ]);
 let browser;
 
@@ -25,11 +25,6 @@ app.listen(PORT, async () => {
         browserWSEndpoint: browserConfig.data.webSocketDebuggerUrl
     });
     page = await browser.newPage();
-    await page.setRequestInterception(true)
-    page.on('request', (request) => {
-        if (request.resourceType() === 'image') request.abort()
-        else request.continue()
-    });
     await browserGoTo(page);
     await checkAndAddTickets(page);
 });
@@ -38,27 +33,27 @@ checkAndAddTickets = async function (page) {
     let inCart = false;
     while (!inCart) {        
         const tickets = await page.$$("tr[id^='FIFAT_FWC22RI']");
-        let index = 0;
         if(tickets.length === 0) {
             await browserGoTo(page);
             continue;
-        } 
-        console.log('Hay ' + tickets.length + ' entradas');        
-        for (const ticket of tickets) {
-            index++;
-            await ticket.click();
-            await page.click('#book');
-            await page.waitForNavigation();
-            // console.log('Intenté comprar ' + index);
-            if (await page.$('#buy_order')) {
-                inCart = true;
-                await page.click('#book');
-                alertPage = await browser.newPage();
-                await alertPage.goto('https://youtu.be/vyDjFVZgJoo?t=56');
-                return;
-            } 
-            await browserGoTo(page);
         }
+        const random = getRndInteger(0, tickets.length - 1);      
+        await tickets[random].click();
+        await page.click('#book');  
+        console.log('Hay ' + tickets.length + ' entradas');  
+        try{
+            await page.waitForNavigation();
+        } catch (error) {
+            await checkAndAddTickets(page);
+        }
+
+        if (await page.$('#buy_order')) {
+            alertPage = await browser.newPage();
+            await alertPage.goto('https://youtu.be/vyDjFVZgJoo?t=56');
+            inCart = true;
+            await page.click('#book');
+            return;
+        } 
         await browserGoTo(page);
     }
 }
@@ -69,4 +64,8 @@ browserGoTo = async (page) => {
             waitUntil: 'load',
             timeout: 0
         });
+}
+
+getRndInteger = (min, max) => {
+    return Math.floor(Math.random() * (max - min) ) + min;
 }
