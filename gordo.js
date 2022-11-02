@@ -34,13 +34,14 @@ checkAndAddTickets = async function (page) {
     while (!inCart) {        
         const tickets = await page.$$("tr[id^='FIFAT_FWC22RI']");
         if(tickets.length === 0) {
+             await page.waitForTimeout(1000); // Timeout if requests are limited
             await browserGoTo(page);
             continue;
-        }
+        } 
         const random = getRndInteger(0, tickets.length - 1);      
         await tickets[random].click();
         await page.click('#book');  
-        console.log('Hay ' + tickets.length + ' entradas');  
+        console.log(`${tickets.length} tickets - ${new Date().getHours()}:${new Date().getMinutes()}`);  
         try{
             await page.waitForNavigation();
         } catch (error) {
@@ -53,7 +54,8 @@ checkAndAddTickets = async function (page) {
             inCart = true;
             await page.click('#book');
             return;
-        } 
+        }
+        await page.waitForTimeout(1500);
         await browserGoTo(page);
     }
 }
