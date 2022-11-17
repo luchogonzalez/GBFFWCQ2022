@@ -34,7 +34,7 @@ checkAndAddTickets = async function (page) {
     while (!inCart) {        
         const tickets = await page.$$("tr[id^='FIFAT_FWC22RI']");
         if(tickets.length === 0) {
-             await page.waitForTimeout(1000); // Timeout if requests are limited
+             await page.waitForTimeout(1500); // Timeout if requests are limited
             await browserGoTo(page);
             continue;
         } 
