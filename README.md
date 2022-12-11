@@ -24,9 +24,7 @@ FIFA TM GORDOBOT will scrap over Fifa Resale Portal for some static matches and 
 5. 6 chrome tabs will open and look for Argentina-Arabia. At this point you can let GORDOBOT do his job, but beware that FIFA will close your session and you will need to manually log in again and restart GORDOBOT
 
 ## Available matches
-- Argentina Arabia
-- Argentina Mexico
-- Argentina Poland
+- Argentina Croatia
 
 ## Tips
 - You can check package.json file for available commands you can run from the cmd terminal. You can open multiple terminals and run commands in parallel to search for multiple matches at the same time
