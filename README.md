@@ -20,7 +20,7 @@ FIFA TM GORDOBOT will scrap over Fifa Resale Portal for some static matches and 
 1. Get the code zip and unzip it at some location (you can clone the git repo or download the zip)
 2. Open a CMD terminal at GORDOBOT location or navigate to the location
 3. run "npm install" command at the cmd console
-4. run "npm run start:croatia"
+4. run "npm run start:croacia"
 5. 6 chrome tabs will open and look for Argentina-Arabia. At this point you can let GORDOBOT do his job, but beware that FIFA will close your session and you will need to manually log in again and restart GORDOBOT
 
 ## Available matches
